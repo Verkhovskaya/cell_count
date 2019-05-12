@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
+path = os.path.dirname(os.path.abspath(__file__))
 
 def load_image(image_path):
     print('Loading image')
@@ -44,7 +46,6 @@ def image_add_location_data(image_array, keep_location=False, cluster_factor=40)
     return np.array(new_array)
 
 def get_distance_to(image_array, color_array):
-    print('Calculating distance to ' + str(color_array))
     if len(color_array) != image_array.shape[2]:
         raise Exception("Dimensions don't match")
     new_array = np.zeros((image_array.shape[0], image_array.shape[1]))
@@ -58,7 +59,7 @@ def show_image(image_array):
     plt.show()
 
 def save_image(image_array, name='out.jpg'):
-    plt.imsave('/home/annav8/cell_counter/'+name, image_array)
+    plt.imsave(path+name, image_array)
 
 def merge_images(image_arrays):
     num_across = int(len(image_arrays)**0.5)

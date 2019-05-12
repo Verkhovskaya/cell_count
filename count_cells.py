@@ -79,18 +79,23 @@ def get_cells(image, min_cell_side):
             all_cells = []
             for cell in cells:
                 split_cells = get_cells(cell.array, min_cell_side)
-                for new_cell in split_cells:
+                if len(split_cells) > 1:
+                  for new_cell in split_cells:
                     new_cell.x += cell.x
                     new_cell.y += cell.y
                     all_cells.append(new_cell)
+                else:
+                  all_cells.append(cell)
             return all_cells
 
 def draw_outline(image_array, cells):
     new_image = np.copy(image_array)
     for cell in cells:
         array = cell.array
-        new_image[cell.x:cell.x+array.shape[0],int(cell.y+array.shape[1]/2)] = [np.max(image_array),0,0]
-        new_image[int(cell.x+array.shape[0]/2),cell.y:cell.y+array.shape[1]] = [np.max(image_array),0,0]
+        x_center = int(cell.x+array.shape[0]/2)
+        y_center = int(cell.y+array.shape[1]/2)
+        new_image[cell.x:cell.x+array.shape[0],y_center-1: y_center+2] = [np.max(image_array),0,0]
+        new_image[x_center-1:x_center+2,cell.y:cell.y+array.shape[1]] = [np.max(image_array),0,0]
     return new_image
 
 

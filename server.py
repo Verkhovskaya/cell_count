@@ -1,10 +1,10 @@
 from count_cells import convert_image
-# A very simple Bottle Hello World app for you to get started with...
 from bottle import default_app, route, post, request, static_file
 import random
 
 @route('/')
 def hello_world():
+    return static_file("landing_page.html", root="/home/annav8/cell_counter/website")
     return '''
     <h1> Count the number of cells in an image </h1>
     <br>
@@ -18,13 +18,14 @@ def hello_world():
     <br>
     <h2> Example: </h2>
     <h3> In </h3>
-    <img src="/img/in/8312.jpg">
+    <img src="/img/in/1778.jpg">
     <br>
     <h3> Out </h3>
-    <img src="/img/out/8312.jpg">
+    <img src="/img/out/1778.jpg">
     <br>
-    79 cells counted
+    104 cells counted
     <br>
+    <h2> Source code: </h2>    <a href="https://github.com/Verkhovskaya/cell_count">   https://github.com/Verkhovskaya/cell_count </a>
 
     '''
 
@@ -43,4 +44,3 @@ def img(dir, name):
 
 
 application = default_app()
-

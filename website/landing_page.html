@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet"          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+<h1> Count the number of cells in an image </h1>
+<br>
+<div class="jumbotron">
+<form action="/count_cells" method="post" enctype="multipart/form-data" class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="image"> Image: </label>
+ <div class="col-sm-10">
+    <input type="file" name="image" id="image" class="form-control-file" value="Choose file">
+</div>
+  </div>
+
+ <div class="form-group">
+    <label class="control-label col-sm-2" for="size">Minimum cell size (pixels):</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="size" value="10" name="size">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Count cells</button>
+    </div>
+  </div>
+</form>
+</div>
+<br>
+<h2> Example: </h2>
+<h3> In </h3>
+<img src="/img/in/1778.jpg">
+<br>
+<h3> Out </h3>
+<img src="/img/out/1778.jpg">
+<br>
+104 cells counted
+<br>
+
+
+<div class="alert alert-dark" role="alert">
+  Source code: <a href="https://github.com/Verkhovskaya/cell_count" class="alert-link">https://github.com/Verkhovskaya/cell_count</a>
+</div>
+</div>
+</body>
+</html>

@@ -23,8 +23,7 @@ def k_means_2(image_array):
         sums = [[0]*num_colors, [0]*num_colors]
         num_points = [0, 0]
         for color in colors:
-            assigned_center = 0 if square_distance(color, centers[0]) <
-                square_distance(color, centers[1]) else 1
+            assigned_center = 0 if square_distance(color, centers[0]) < square_distance(color, centers[1]) else 1
             for k in range(num_colors):
                 sums[assigned_center][k] += color[k]
             num_points[assigned_center] += 1
@@ -39,8 +38,7 @@ def k_means_2(image_array):
             else:
                 new_centers[j] = centers[j]
 
-        if sum([square_distance(new_centers[j], centers[j]) for j in [0, 1]]) <
-            color_range/256.0:
+        if sum([square_distance(new_centers[j], centers[j]) for j in [0, 1]]) < color_range/256.0:
             # return early
             return new_centers
         else:
@@ -52,4 +50,4 @@ def k_means_2_test():
     points = np.array([[[0, 0], [1, 2], [3, 5], [5, 5], [4,5]]])
     print(k_means_2(points))
 
-k_means_2_test()
+# k_means_2_test()

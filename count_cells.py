@@ -122,3 +122,23 @@ def test():
     print(convert_image('test_in.jpg', 'test_out.jpg'))
 # test()
 
+
+def generate_cells_mask(image, cells):
+    mask = np.zeros((image.shape[0], image.shape[1]))
+    for cell in cells:
+       for x in range(cell.array.shape[0]):
+          for y in range(cell.array.shape[1]):
+              if sum(cell.array[x,y]) > 0:
+                  mask[cell.x+x,cell.y+y] = 1
+    return mask
+
+def test2():
+    print(convert_image('test2.png', 'test2_out.png'))
+    image = load_image('test2.png')
+    overlays = split_into_two_major_colors(image)
+    # cell_overlay = get_cell_overlay(overlays)
+    # show_image(cell_overlay)
+    cells = get_cells(image)
+    show_image(generate_cells_mask(image, cells))
+    
+# test2()

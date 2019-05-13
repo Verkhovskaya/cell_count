@@ -7,6 +7,7 @@ import os
 path = os.path.dirname(os.path.abspath(__file__)) + '/'
 sys.setrecursionlimit(100000)
 
+
 class Cell:
     def __init__(self, array, x, y):
      self.array = array
@@ -27,6 +28,7 @@ def split_into_two_major_colors(image_array):
         overlays.append(is_closest)
     return overlays
 
+
 def split_into_individual_cells(cell_overlay, image_array):
     image_copy = np.copy(cell_overlay)
     cells = []
@@ -42,6 +44,7 @@ def split_into_individual_cells(cell_overlay, image_array):
                      cells.append(Cell(new_overlay, x_start, y_start))
     return cells
 
+
 def array_overlay_from_found_locations(found_locations, image_array):
     min_x = min([point[0] for point in found_locations])
     max_x = max([point[0] for point in found_locations]) + 1
@@ -52,6 +55,7 @@ def array_overlay_from_found_locations(found_locations, image_array):
         new_array[point[0]-min_x, point[1]-min_y] = image_array[point[0], point[1]]
     return new_array
 
+
 def map_cell(found_locations, image_array, x, y):
     if x < image_array.shape[0] and y < image_array.shape[1] and x >= 0 and y >= 0:
         if image_array[x,y]:
@@ -61,6 +65,7 @@ def map_cell(found_locations, image_array, x, y):
             map_cell(found_locations, image_array, x, y+1)
             map_cell(found_locations, image_array, x-1, y)
             map_cell(found_locations, image_array, x, y-1)
+
 
 def get_cell_overlay(overlays):
     overlay = overlays[0]
@@ -75,7 +80,7 @@ def get_cells(image, min_cell_side=None):
     cell_overlay = get_cell_overlay(overlays)
     cells = split_into_individual_cells(cell_overlay, image)
     if min_cell_side == None:
-        min_cell_side = max(max([cell.array.shape[0] for cell in cells]), max([cell.array.shape[1] for cell in cells])) / 4
+        min_cell_side = max(max([cell.array.shape[0] for cell in cells]), max([cell.array.shape[1] for cell in cells])) / 8
     print(min_cell_side)
     print(len(cells))
     cells = list(filter(lambda cell: cell.array.shape[0] > min_cell_side and cell.array.shape[1] > min_cell_side, cells))
@@ -94,6 +99,7 @@ def get_cells(image, min_cell_side=None):
             else:
                 all_cells.append(cell)
         return all_cells
+
 
 def draw_outline(image_array, cells):
     new_image = np.copy(image_array)
@@ -114,5 +120,5 @@ def convert_image(in_name, out_name):
 
 def test():
     print(convert_image('test_in.jpg', 'test_out.jpg'))
-test()
+# test()
 

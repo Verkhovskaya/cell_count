@@ -1,8 +1,7 @@
 from file_utils import save_image, load_image, image_add_location_data, get_distance_to, show_image, merge_images, simplify_image, print_image
-from k_means import k_means_2
+from k_means import k_means_2, square_distance
 import numpy as np
 import sys
-from scipy.signal import convolve2d
 import os
 path = os.path.dirname(os.path.abspath(__file__)) + '/'
 sys.setrecursionlimit(100000)
@@ -17,16 +16,16 @@ class Cell:
 cells_global = []
 def split_into_two_major_colors(image_array):
     colors = k_means_2(simplify_image(image_array, 10, 10))
-    distances = []
-    for i in range(len(colors)):
-        distances.append(get_distance_to(image_array, colors[i]))
-    overlays = []
-    for i in range(len(colors)):
-        is_closest = np.zeros(image_array.shape[:2]) + 1
-        for j in range(len(colors)):
-            is_closest = is_closest * (distances[i] <= distances[j])
-        overlays.append(is_closest)
-    return overlays
+    overlay_1 = np.zeros(image_array.shape[:2]) + 1
+    overlay_2 = np.zeros(image_array.shape[:2]) + 1
+    for x in range(image_array.shape[0]):
+        for y in range(image_array.shape[1]):
+            color = image_array[x,y]
+            distance_to_color_1 = square_distance(color, colors[0])
+            distance_to_color_2 = square_distance(color, colors[1])
+            overlay_1[x,y] = 1 if sum(color) > 0 and distance_to_color_1 < distance_to_color_2 else 0
+            overlay_2[x,y] = 1 if sum(color) > 0 and distance_to_color_1 > distance_to_color_2 else 0
+    return overlay_1, overlay_2
 
 
 def split_into_individual_cells(cell_overlay, image_array):
@@ -68,9 +67,10 @@ def map_cell(found_locations, image_array, x, y):
 
 
 def get_cell_overlay(overlays):
-    overlay = overlays[0]
-    if (np.sum(overlay[0,:]) + np.sum(overlay[:,0]) + np.sum(overlay[-1,:]) + np.sum(overlay[:,-1]))/(overlay.shape[0] + overlay.shape[1])/2 < 0.5:
-        return overlay
+    perimeter_1 = np.sum(overlays[0][0,:]) + np.sum(overlays[0][:,0]) + np.sum(overlays[0][-1,:]) + np.sum(overlays[0][:,-1])
+    perimeter_2 = np.sum(overlays[1][0,:]) + np.sum(overlays[1][:,0]) + np.sum(overlays[1][-1,:]) + np.sum(overlays[1][:,-1])
+    if perimeter_1 > perimeter_2:
+        return overlays[0]
     else:
         return overlays[1]
 
@@ -107,8 +107,10 @@ def draw_outline(image_array, cells):
         array = cell.array
         x_center = int(cell.x+array.shape[0]/2)
         y_center = int(cell.y+array.shape[1]/2)
-        new_image[cell.x:cell.x+array.shape[0],y_center-1: y_center+2] = [np.max(image_array),0,0]
-        new_image[x_center-1:x_center+2,cell.y:cell.y+array.shape[1]] = [np.max(image_array),0,0]
+        new_image[cell.x:cell.x+array.shape[0],y_center-1: y_center+2] = 0
+        new_image[cell.x:cell.x+array.shape[0],y_center-1: y_center+2][0] = np.max(image_array)
+        new_image[x_center-1:x_center+2,cell.y:cell.y+array.shape[1]] = 0
+        new_image[x_center-1:x_center+2,cell.y:cell.y+array.shape[1]][0] = np.max(image_array)
     return new_image
 
 
@@ -140,5 +142,5 @@ def test2():
     # show_image(cell_overlay)
     cells = get_cells(image)
     show_image(generate_cells_mask(image, cells))
-    
+
 # test2()

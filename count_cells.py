@@ -1,9 +1,10 @@
 from file_utils import save_image, load_image, image_add_location_data, get_distance_to, show_image, merge_images, simplify_image, print_image
-from k_means_tf import k_means_2
-from k_means import square_distance
+# from k_means_tf import k_means_2
+from k_means import k_means_2, square_distance
 import numpy as np
 import sys
 import os
+import datetime
 path = os.path.dirname(os.path.abspath(__file__)) + '/'
 sys.setrecursionlimit(100000)
 
@@ -82,8 +83,6 @@ def get_cells(image, min_cell_side=None):
     cells = split_into_individual_cells(cell_overlay, image)
     if min_cell_side == None:
         min_cell_side = max(max([cell.array.shape[0] for cell in cells]), max([cell.array.shape[1] for cell in cells])) / 8
-    print(min_cell_side)
-    print(len(cells))
     cells = list(filter(lambda cell: cell.array.shape[0] > min_cell_side and cell.array.shape[1] > min_cell_side, cells))
 
     if len(cells) <= 1:
@@ -122,7 +121,9 @@ def convert_image(in_name, out_name):
     return len(cells)
 
 def test():
+    start = datetime.datetime.now()
     print(convert_image('test_in.jpg', 'test_out.jpg'))
+    print(datetime.datetime.now()-start)
 # test()
 
 

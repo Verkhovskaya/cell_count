@@ -69,7 +69,7 @@ def map_cell(found_locations, image_array, x, y):
 def get_cell_overlay(overlays):
     perimeter_1 = np.sum(overlays[0][0,:]) + np.sum(overlays[0][:,0]) + np.sum(overlays[0][-1,:]) + np.sum(overlays[0][:,-1])
     perimeter_2 = np.sum(overlays[1][0,:]) + np.sum(overlays[1][:,0]) + np.sum(overlays[1][-1,:]) + np.sum(overlays[1][:,-1])
-    if perimeter_1 > perimeter_2:
+    if perimeter_1 < perimeter_2:
         return overlays[0]
     else:
         return overlays[1]

@@ -51,4 +51,5 @@ def k_means_2(image_array):
 def test():
     data = [[[0,0,0], [1,1,1],[1,2,1],[5,5,5],[6.0,6,6]]]
     print(k_means_2(data))
+
 # test()

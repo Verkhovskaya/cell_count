@@ -1,5 +1,6 @@
 from file_utils import save_image, load_image, image_add_location_data, get_distance_to, show_image, merge_images, simplify_image, print_image
-from k_means import k_means_2, square_distance
+from k_means_tf import k_means_2
+from k_means import square_distance
 import numpy as np
 import sys
 import os
